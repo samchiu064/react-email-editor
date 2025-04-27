@@ -1,7 +1,8 @@
 import { useEmailEditorStore } from '../hooks/useEmailEditorStore';
 import { useDrop, useDrag } from 'react-dnd';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Text, Img, Button } from '@react-email/components';
+import type { Block } from '../hooks/useEmailEditorStore';
 
 interface DragItem {
   type: string;
@@ -9,7 +10,7 @@ interface DragItem {
 }
 
 interface BlockProps {
-  block: any;
+  block: Block;
   idx: number;
   selectBlock: (index: number) => void;
   selectedBlockIndex: number | null;
@@ -23,6 +24,8 @@ function Block({ block, idx, selectBlock, selectedBlockIndex }: BlockProps) {
       isDragging: monitor.isDragging(),
     }),
   });
+  const ref = useRef<HTMLDivElement>(null);
+  drag(ref);
 
   const blockContent = (() => {
     switch (block.type) {
@@ -53,7 +56,7 @@ function Block({ block, idx, selectBlock, selectedBlockIndex }: BlockProps) {
 
   return (
     <div
-      ref={drag}
+      ref={ref}
       onClick={() => selectBlock(idx)}
       className={`p-4 mb-2 bg-white border cursor-move rounded ${
         selectedBlockIndex === idx ? 'border-blue-500' : 'border-gray-300'
@@ -67,7 +70,7 @@ function Block({ block, idx, selectBlock, selectedBlockIndex }: BlockProps) {
 function EditorCanvas() {
   const { blocks, addBlock, selectBlock, selectedBlockIndex } =
     useEmailEditorStore();
-  const [previewHtml, setPreviewHtml] = useState('');
+  const [previewHtml] = useState('');
 
   const [, drop] = useDrop<DragItem>({
     accept: 'block',
@@ -79,6 +82,8 @@ function EditorCanvas() {
       }
     },
   });
+  const ref = useRef<HTMLDivElement>(null);
+  drop(ref);
 
   const handleSaveJson = () => {
     const json = JSON.stringify(blocks, null, 2);
@@ -98,7 +103,7 @@ function EditorCanvas() {
       </div>
 
       <div
-        ref={drop}
+        ref={ref}
         className="min-h-[400px] bg-gray-100 p-4 rounded border-2 border-dashed border-gray-400"
       >
         {blocks.length > 0 ? (

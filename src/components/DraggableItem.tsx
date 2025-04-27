@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { useDrag } from 'react-dnd'
 
 function DraggableItem({ type, label }: { type: string; label: string }) {
@@ -8,10 +9,12 @@ function DraggableItem({ type, label }: { type: string; label: string }) {
       isDragging: monitor.isDragging(),
     }),
   }))
+  const ref = useRef<HTMLDivElement>(null)
+  drag(ref)
 
   return (
     <div
-      ref={drag}
+      ref={ref}
       className={`p-2 mb-2 bg-white border rounded shadow cursor-move ${
         isDragging ? 'opacity-50' : ''
       }`}
