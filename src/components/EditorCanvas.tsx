@@ -1,8 +1,8 @@
-import { useEmailEditorStore } from '../hooks/useEmailEditorStore';
+import { useEmailEditorStore } from '../stores/useEmailEditorStore';
 import { useDrop, useDrag } from 'react-dnd';
 import { useState, useRef } from 'react';
 import { Text, Img, Button } from '@react-email/components';
-import type { Block } from '../hooks/useEmailEditorStore';
+import type { Block } from '../stores/useEmailEditorStore';
 
 interface DragItem {
   type: string;

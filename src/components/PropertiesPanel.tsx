@@ -1,4 +1,4 @@
-import { useEmailEditorStore } from '../hooks/useEmailEditorStore';
+import { useEmailEditorStore } from '../stores/useEmailEditorStore';
 
 function PropertiesPanel() {
   const { blocks, selectedBlockIndex, updateBlockContent, removeBlock } =
